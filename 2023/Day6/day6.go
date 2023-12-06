@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"strings"
 
 	"github.com/Alex-Waring/AoC/utils"
@@ -39,7 +40,6 @@ func part2() {
 	times := strings.Fields(strings.Split(lines[0], ":")[1])
 	distance := strings.Fields(strings.Split(lines[1], ":")[1])
 
-	// victories := []int{}
 	distance_merge := ""
 	time_merge := ""
 	for i := 0; i < len(times); i++ {
@@ -49,19 +49,10 @@ func part2() {
 	distance_int := utils.IntegerOf(distance_merge)
 	time_int := utils.IntegerOf(time_merge)
 
-	time := 0
-	for (time * (time_int - time)) < distance_int {
-		time++
-	}
-	min_time := time
+	min_time := (time_int - int(math.Sqrt(float64(time_int*time_int-4*distance_int)))) / 2
+	max_time := (time_int + int(math.Sqrt(float64(time_int*time_int-4*distance_int)))) / 2
 
-	time = time_int
-	for (time * (time_int - time)) < distance_int {
-		time--
-	}
-	max_time := time
-
-	fmt.Println(max_time - min_time + 1)
+	fmt.Println(max_time - min_time)
 }
 
 func main() {
