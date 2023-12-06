@@ -27,3 +27,11 @@ func MakeRange(min int, max int) []int {
 	}
 	return a
 }
+
+func Multiply(arr []int) int {
+	res := arr[0]
+	for i := 1; i < len(arr); i++ {
+		res = res * arr[i]
+	}
+	return res
+}
