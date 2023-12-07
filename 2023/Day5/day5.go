@@ -75,7 +75,7 @@ func main() {
 
 	// It's not optimised but it works...
 	for i := 0; i < len(seeds); i += 2 {
-		fmt.Println(seeds[i*2])
+		fmt.Println(seeds[i])
 		start := utils.IntegerOf(seeds[i])
 		seed_range := utils.IntegerOf(seeds[i+1])
 		for seed := start; seed < start+seed_range; seed++ {

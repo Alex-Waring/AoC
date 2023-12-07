@@ -34,7 +34,7 @@ func part1() {
 }
 
 func part2() {
-	defer utils.Timer("part1")()
+	defer utils.Timer("part2")()
 	lines := utils.ReadInput("input.txt")
 
 	times := strings.Fields(strings.Split(lines[0], ":")[1])
