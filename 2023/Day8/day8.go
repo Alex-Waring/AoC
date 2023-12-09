@@ -14,7 +14,7 @@ type instruction struct {
 }
 
 func part1(directions string, instructions map[string]instruction, start_location string) int {
-	defer utils.Timer("part1")
+	defer utils.Timer("part1")()
 	loops := 0
 	for start_location != "ZZZ" {
 		if directions[loops%len(directions)] == 'R' {
@@ -34,7 +34,6 @@ func endsWith(location string, letter string) bool {
 }
 
 func main() {
-	defer utils.Timer("main")
 	lines := utils.ReadInput("input.txt")
 	directions := lines[0]
 	raw_instructions := utils.RemoveSliceSpaces(lines[1:])
@@ -52,6 +51,7 @@ func main() {
 	loops := part1(directions, instructions, current_location)
 	fmt.Println(loops)
 
+	defer utils.Timer("part2")()
 	ghost_starts := []string{}
 	steps := []int{}
 	for key, _ := range instructions {
