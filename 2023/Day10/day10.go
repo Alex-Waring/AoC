@@ -105,6 +105,7 @@ func main() {
 		}
 		current_coords = current_coords[1:]
 	}
+
 	for y := 0; y < len(grid_pipes); y++ {
 		for x := 0; x < len(grid_pipes[y]); x++ {
 			if grid_pipes[y][x].loop {
@@ -124,6 +125,8 @@ func main() {
 					pipe.scanned_loop = "."
 					grid_pipes[y][x] = pipe
 					fmt.Print(".")
+				} else if pipe.pipe == 'S' {
+					fmt.Print("S")
 				} else {
 					pipe.scanned_loop = "*"
 					grid_pipes[y][x] = pipe
@@ -144,7 +147,7 @@ func main() {
 			pipe := grid_pipes[y][x]
 			if pipe.scanned_loop == "*" {
 				crossed++
-				fmt.Print(string(pipe.pipe))
+				fmt.Print("*")
 			} else if pipe.loop {
 				fmt.Print(string(pipe.pipe))
 			} else if crossed%2 == 0 {
