@@ -10,3 +10,20 @@ func RemoveSliceSpaces(list []string) []string {
 	}
 	return return_list
 }
+
+func InsertIntoList(a []rune, index int, value rune) []rune {
+	if len(a) == index {
+		return append(a, value)
+	}
+	a = append(a[:index+1], a[index:]...)
+	a[index] = value
+	return a
+}
+
+func SliceFilledWithRune(size int, r rune) []rune {
+	data := make([]rune, size)
+	for i := 0; i < size; i++ {
+		data[i] = r
+	}
+	return data
+}
