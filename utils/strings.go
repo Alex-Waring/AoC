@@ -27,3 +27,11 @@ func SliceFilledWithRune(size int, r rune) []rune {
 	}
 	return data
 }
+
+func SumListString(input []string) int {
+	sum := 0
+	for _, str := range input {
+		sum += IntegerOf(str)
+	}
+	return sum
+}
