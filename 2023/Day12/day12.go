@@ -44,9 +44,11 @@ func (s *Solver) solve(input string, damaged_springs []string, index int) int {
 	if len(input) == 0 {
 		if len(damaged_springs) == 0 {
 			s.cache[cache_key] = 1
+			// No input and no groups means a win!
 			return 1
 		} else {
 			s.cache[cache_key] = 0
+			// We have no input but there are groups left, fail
 			return 0
 		}
 	}
@@ -65,6 +67,7 @@ func (s *Solver) solve(input string, damaged_springs []string, index int) int {
 
 	// If it starts with a ? then try both . and #
 	if strings.HasPrefix(input, "?") {
+		// This is the branch
 		result := s.solve(strings.Replace(input, "?", "#", 1), damaged_springs, index) + s.solve(strings.Replace(input, "?", ".", 1), damaged_springs, index)
 		s.cache[cache_key] = result
 		return result
@@ -73,6 +76,9 @@ func (s *Solver) solve(input string, damaged_springs []string, index int) int {
 	// Start finding the gear set
 	if strings.HasPrefix(input, "#") {
 		// Shouldn't really be here, returning zero for cases where it's not a possible set
+		// Option 1 is we have no more groups left, we know we have a gear left in the input so this is a fail
+		// Option 2 is if the length of the input is less than the first group, we shouldn't hit this because
+		// of line 56 but it's a good catch
 		if (len(damaged_springs) == 0) || (len(input) < utils.IntegerOf(damaged_springs[0])) {
 			s.cache[cache_key] = 0
 			return 0
