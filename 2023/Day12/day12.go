@@ -145,9 +145,7 @@ func part2(spring_list []GearSet) {
 	total_arrangements := 0
 	s := Solver{make(map[string]int)}
 	for index, gearSet := range unfolded_spring_list {
-		fmt.Println(gearSet.input, gearSet.damaged_springs)
 		total_arrangements += s.solve(gearSet.input, gearSet.damaged_springs, index)
-		fmt.Println(index)
 	}
 	fmt.Println(total_arrangements)
 }
