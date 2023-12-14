@@ -64,6 +64,18 @@ func tilt(rock_map map[int]map[int]string, y_tilt int, x_tilt int) map[int]map[i
 	return rock_map
 }
 
+func calculateLoad(rock_map map[int]map[int]string) int {
+	total := 0
+	for y := 0; y < len(rock_map); y++ {
+		for x := 0; x < len(rock_map[0]); x++ {
+			if rock_map[y][x] == "O" {
+				total += len(rock_map) - y
+			}
+		}
+	}
+	return total
+}
+
 func part1(lines []string) {
 	defer utils.Timer("part1")()
 
@@ -79,15 +91,8 @@ func part1(lines []string) {
 	}
 
 	rock_map = tilt(rock_map, 1, 0)
+	total := calculateLoad(rock_map)
 
-	total := 0
-	for y := 0; y < len(rock_map); y++ {
-		for x := 0; x < len(rock_map[0]); x++ {
-			if rock_map[y][x] == "O" {
-				total += len(rock_map) - y
-			}
-		}
-	}
 	fmt.Println(total)
 }
 
@@ -105,47 +110,54 @@ func part2(lines []string) {
 		}
 	}
 
-	memory := []string{stringify(rock_map)}
+	memory := map[string]int{}
 	cycle_found := false
 	loop_cycle := 0
-	for cycle := 0; cycle < 1000000000 && !cycle_found; cycle++ {
+	targetCycle := 1000000000
+
+	for cycle := 1; cycle <= targetCycle && !cycle_found; cycle++ {
 		rock_map = tilt(rock_map, 1, 0)
 		rock_map = tilt(rock_map, 0, 1)
 		rock_map = tilt(rock_map, -1, 0)
 		rock_map = tilt(rock_map, 0, -1)
+		rock_map_str := stringify(rock_map)
 
-		rock_map_string := stringify(rock_map)
-		if utils.StringInSlice(rock_map_string, memory) {
+		if prevCycle, exists := memory[rock_map_str]; exists {
 			fmt.Print("Cycle found at ")
 			fmt.Println(cycle)
-			loop_cycle = cycle
+			loop_cycle = cycle - prevCycle
 			cycle_found = true
 		} else {
-			memory = append(memory, rock_map_string)
-		}
-
-		if cycle%1000 == 0 {
-			fmt.Println(cycle)
+			memory[rock_map_str] = cycle
 		}
 	}
 
-	fmt.Println(loop_cycle)
-	cycles_remaining := 1000000000 % loop_cycle
-	for cycle := 1000000000 - cycles_remaining + 1; cycle <= 1000000000 && !cycle_found; cycle++ {
+	if !cycle_found {
+		fmt.Println("Cycle not found in the given target cycles.")
+		return
+	}
+
+	cycles_remaining := (targetCycle - loop_cycle) % loop_cycle
+
+	rock_map = map[int]map[int]string{}
+
+	for y := 0; y < len(lines); y++ {
+		for x := 0; x < len(lines[0]); x++ {
+			if _, ok := rock_map[y]; !ok {
+				rock_map[y] = make(map[int]string)
+			}
+			rock_map[y][x] = string(lines[y][x])
+		}
+	}
+
+	for cycle := 1; cycle <= cycles_remaining; cycle++ {
 		rock_map = tilt(rock_map, 1, 0)
 		rock_map = tilt(rock_map, 0, 1)
 		rock_map = tilt(rock_map, -1, 0)
 		rock_map = tilt(rock_map, 0, -1)
 	}
 
-	total := 0
-	for y := 0; y < len(rock_map); y++ {
-		for x := 0; x < len(rock_map[0]); x++ {
-			if rock_map[y][x] == "O" {
-				total += len(rock_map) - y
-			}
-		}
-	}
+	total := calculateLoad(rock_map)
 	fmt.Println(total)
 }
 
