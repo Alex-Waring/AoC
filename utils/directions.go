@@ -50,6 +50,29 @@ func (d Direction) Turn(turn Direction) Direction {
 	panic("not handled")
 }
 
+func (d Direction) String() string {
+	switch d {
+	case Up:
+		return "up"
+	case Down:
+		return "down"
+	case Left:
+		return "left"
+	case Right:
+		return "right"
+	case UpLeft:
+		return "up left"
+	case UpRight:
+		return "up right"
+	case DownLeft:
+		return "down left"
+	case DownRight:
+		return "down right"
+	default:
+		panic(fmt.Sprintf("unknown direction %d", d))
+	}
+}
+
 type Position struct {
 	Row int
 	Col int

@@ -9,6 +9,7 @@ import (
 )
 
 func part1(input []string, lagoon map[utils.Position]bool) {
+	defer utils.Timer("part1")()
 	position := utils.NewPosition(0, 0)
 	lagoon[position] = true
 
@@ -89,14 +90,11 @@ func part1(input []string, lagoon map[utils.Position]bool) {
 	fmt.Println(total)
 }
 
-func part2(input []string, lagoon map[utils.Position]bool) {
+func part2(input []string) {
+	defer utils.Timer("part2")()
 	position := utils.NewPosition(0, 0)
-	lagoon[position] = true
-
-	rows := 0
-	columns := 0
-	rows_start := 0
-	columns_start := 0
+	vertices := []utils.Position{}
+	perimeter := 0
 
 	for _, instruction := range input {
 		colour := strings.Split(instruction, " ")[2]
@@ -120,59 +118,30 @@ func part2(input []string, lagoon map[utils.Position]bool) {
 		distance, _ := strconv.ParseInt(colour[1:6], 16, 64)
 		int_distance := int(distance)
 
-		for i := 0; i < int_distance; i++ {
-			position = position.Move(standard_direction, 1)
-			rows = max(rows, position.Row)
-			columns = max(columns, position.Col)
-			columns_start = min(columns_start, position.Col)
-			rows_start = min(rows_start, position.Row)
-			lagoon[position] = true
-		}
-	}
+		position = position.Move(standard_direction, int_distance)
+		vertices = append(vertices, position)
 
-	// At no point is an edge next to another unrelated edge, so we can ignore direction
-	scanned_map := make(map[utils.Position]bool)
-	for y := rows_start; y <= rows; y++ {
-		crossed := 0
-		for x := columns_start; x <= columns; x++ {
-			draw_position := utils.NewPosition(y, x)
-			previous_poition := utils.NewPosition(y, x-1)
-			next_position := utils.NewPosition(y, x+1)
-			above := utils.NewPosition(y-1, x)
-			below := utils.NewPosition(y+1, x)
-
-			// Crosses when .###.##..#...#
-			// gives values 00011122233334
-
-			if lagoon[draw_position] && lagoon[above] && lagoon[below] {
-				crossed++
-			} else if lagoon[previous_poition] && lagoon[draw_position] && lagoon[below] && !lagoon[next_position] {
-				crossed++
-			} else if !lagoon[previous_poition] && lagoon[draw_position] && lagoon[below] && lagoon[next_position] {
-				crossed++
-			} else if !lagoon[draw_position] && crossed%2 == 1 {
-				scanned_map[draw_position] = true
-			}
-		}
-		fmt.Println()
+		perimeter += int_distance
 	}
 
 	total := 0
-	for y := rows_start; y <= rows; y++ {
-		for x := columns_start; x <= columns; x++ {
-			draw_position := utils.NewPosition(y, x)
-			if scanned_map[draw_position] || lagoon[draw_position] {
-				total++
-			}
-		}
+	for i := 0; i < len(vertices)-1; i++ {
+		xi := vertices[i].Col
+		yi := vertices[i].Row
+		xii := vertices[i+1].Col
+		yii := vertices[i+1].Row
+
+		total += (xi + xii) * (yii - yi) / 2
 	}
-	fmt.Println(total)
+
+	fmt.Println(total + perimeter/2 - 1)
 }
 
 func main() {
 	input := utils.ReadInput("input.txt")
 
 	lagoon := make(map[utils.Position]bool)
+	part1(input, lagoon)
 
-	part2(input, lagoon)
+	part2(input)
 }
