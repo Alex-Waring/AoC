@@ -1,5 +1,7 @@
 package utils
 
+import "strings"
+
 func RemoveSliceSpaces(list []string) []string {
 	return_list := []string{}
 
@@ -43,4 +45,18 @@ func StringInSlice(a string, list []string) bool {
 		}
 	}
 	return false
+}
+
+func GetStringInBetween(str string, start string, end string) (result string) {
+	s := strings.Index(str, start)
+	if s == -1 {
+		return
+	}
+	s += len(start)
+	e := strings.Index(str[s:], end)
+	if e == -1 {
+		return
+	}
+	e += s + e - 1
+	return str[s:e]
 }
