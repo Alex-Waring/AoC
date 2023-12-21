@@ -65,3 +65,11 @@ func LCM(a, b int, integers ...int) int {
 
 	return result
 }
+
+// Abs returns the absolute value.
+func Abs(a int) int {
+	if a >= 0 {
+		return a
+	}
+	return -a
+}

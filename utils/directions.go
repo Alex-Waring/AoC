@@ -140,3 +140,13 @@ func (l Location) Turn(d Direction, moves int) Location {
 	pos := l.Pos.Move(dir, moves)
 	return Location{Pos: pos, Dir: dir}
 }
+
+// Manhattan returns the manhattan distance.
+func (p Position) Manhattan(p2 Position) int {
+	return Abs(p.Row-p2.Row) + Abs(p.Col-p2.Col)
+}
+
+// ManhattanZero returns the manhattan distance from the zero position.
+func (p Position) ManhattanZero() int {
+	return p.Manhattan(Position{})
+}
