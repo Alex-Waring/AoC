@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 
 	"github.com/Alex-Waring/AoC/utils"
 )
@@ -93,6 +94,47 @@ func part1(grid map[utils.Position]Location, start_pos utils.Position, rows int,
 	return visited_count
 }
 
+func find_visited(grid map[utils.Position]Location, visited map[utils.Position]int, start_pos utils.Position, rows int, cols int) map[utils.Position]int {
+	directions := []utils.Direction{utils.Up, utils.Down, utils.Left, utils.Right}
+
+	type Entry struct {
+		steps int
+		pos   utils.Position
+	}
+
+	q := utils.Queue[Entry]{}
+	q.Push(Entry{
+		steps: 0,
+		pos:   start_pos,
+	})
+
+	for !q.IsEmpty() {
+		entry := q.Pop()
+
+		if _, exists := visited[entry.pos]; !exists {
+			visited[entry.pos] = entry.steps
+		} else if entry.steps < visited[entry.pos] {
+			visited[entry.pos] = entry.steps
+		} else {
+			continue
+		}
+
+		for _, direction := range directions {
+			new_pos := entry.pos.Move(direction, 1)
+
+			if 0 <= new_pos.Col && new_pos.Col <= cols && 0 <= new_pos.Row && new_pos.Row <= rows {
+				if grid[new_pos].land != "#" {
+					q.Push(Entry{
+						steps: entry.steps + 1,
+						pos:   new_pos,
+					})
+				}
+			}
+		}
+	}
+	return visited
+}
+
 func main() {
 	input := utils.ReadInput("input.txt")
 	grid := make(map[utils.Position]Location)
@@ -115,89 +157,39 @@ func main() {
 	}
 	fmt.Println(part1(grid, start_pos, rows, cols, 64))
 
-	// Step 2, find values in a 5.5 grid
+	// Step 2
 
 	needed_steps := 26501365
 	grid_length := 131
-	mod := needed_steps % grid_length
 
-	for r, row := range input {
-		for c, column := range row {
-			for x := 1; x <= 5; x++ {
-				for y := 1; y <= 5; y++ {
-					pos := utils.NewPosition(r*x, c*y)
-					loc := Location{land: string(column), visited: false}
-					grid[pos] = loc
-				}
+	n := math.Floor(float64(needed_steps / grid_length))
+	fmt.Println(n)
+
+	even := n * n
+	odd := (n + 1) * (n + 1)
+	even_corners := n
+	odd_corners := (n - 1)
+
+	visited := map[utils.Position]int{}
+	visited = find_visited(grid, visited, start_pos, rows, cols)
+
+	var even_corners_val int
+	var odd_corners_val int
+	var even_full_val int
+	var odd_full_val int
+	for _, steps := range visited {
+		if steps%2 == 0 {
+			even_full_val++
+			if steps > 65 {
+				even_corners_val++
 			}
-			cols = max(cols, r)
-		}
-		rows = max(rows, r)
-	}
-	new_rows := rows * 5
-	steps55 := grid_length*2 + mod
-	start_pos = utils.NewPosition(grid_length*2+mod, grid_length*2+mod)
-	total55 := part1(grid, start_pos, new_rows, new_rows, grid_length*2+mod)
-
-	// find values in a 7.7 grid
-
-	for r, row := range input {
-		for c, column := range row {
-			for x := 1; x <= 7; x++ {
-				for y := 1; y <= 7; y++ {
-					pos := utils.NewPosition(r*x, c*y)
-					loc := Location{land: string(column), visited: false}
-					grid[pos] = loc
-				}
+		} else {
+			odd_full_val++
+			if steps > 65 {
+				odd_corners_val++
 			}
-			cols = max(cols, r)
 		}
-		rows = max(rows, r)
 	}
-	new_rows = rows * 7
-	steps77 := grid_length*3 + mod
-	start_pos = utils.NewPosition(grid_length*3+mod, grid_length*3+mod)
-	total77 := part1(grid, start_pos, new_rows, new_rows, grid_length*3+mod)
-
-	// find values in a 9.9 grid
-
-	for r, row := range input {
-		for c, column := range row {
-			for x := 1; x <= 9; x++ {
-				for y := 1; y <= 9; y++ {
-					pos := utils.NewPosition(r*x, c*y)
-					loc := Location{land: string(column), visited: false}
-					grid[pos] = loc
-				}
-			}
-			cols = max(cols, r)
-		}
-		rows = max(rows, r)
-	}
-	new_rows = rows * 9
-	steps99 := grid_length*4 + mod
-	start_pos = utils.NewPosition(grid_length*4+mod, grid_length*4+mod)
-	total99 := part1(grid, start_pos, new_rows, new_rows, grid_length*4+mod)
-
-	// f(n) = total55
-	// f(n+2) = total77
-	// f(n+4) = totall99
-
-	// x is the number of steps, y is the result
-	// gives data points
-	// steps55, total55...
-
-	// Gives follow for L(needed_steps)
-	L0 := ((needed_steps - steps77) * (needed_steps - steps99)) / ((steps55 - steps77) * (steps55 - steps99))
-	L1 := ((needed_steps - steps55) * (needed_steps - steps99)) / ((steps77 - steps55) * (steps77 - steps99))
-	L2 := ((needed_steps - steps55) * (needed_steps - steps77)) / ((steps99 - steps55) * (steps99 - steps77))
-	fmt.Println(L0)
-	fmt.Println(total55)
-	fmt.Println(L1)
-	fmt.Println(total77)
-	fmt.Println(L2)
-	fmt.Println(total99)
-	result := L0*total55 + L1*total77 + L2*total99
-
-	fmt.Println(result)
+	result := even_corners*float64(even_corners_val) - odd_corners*float64(odd_corners_val) + even*float64(even_full_val) + odd*float64(odd_full_val)
+	fmt.Println(int(result))
 }
