@@ -82,8 +82,12 @@ func part1(grid map[utils.Position]Location, start_pos utils.Position, rows int,
 
 			if loc.finished {
 				visited_count++
+				fmt.Print("O")
+			} else {
+				fmt.Print(loc.land)
 			}
 		}
+		fmt.Println()
 	}
 
 	return visited_count
@@ -111,81 +115,89 @@ func main() {
 	}
 	fmt.Println(part1(grid, start_pos, rows, cols, 64))
 
-	// The next block centre is 131 steps away, if we can reach it then we can do the max number
-	// of steps in our current block, and we can skip to the next one
-
-	// Fan out from there, if we have odd left, different max to even
-
-	// When we hit edge blocks, we can calculate manually
+	// Step 2, find values in a 5.5 grid
 
 	needed_steps := 26501365
-	next_block := 131
+	grid_length := 131
+	mod := needed_steps % grid_length
 
-	total := 0
-
-	set_grid(grid, input)
-	max_even := part1(grid, start_pos, rows, cols, next_block+1)
-	set_grid(grid, input)
-	max_odd := part1(grid, start_pos, rows, cols, next_block)
-
-	full_blocks := (needed_steps - (needed_steps % next_block)) / next_block
-	fmt.Println(full_blocks)
-
-	type Entry struct {
-		block utils.Position
-		steps int
-	}
-
-	q := utils.Queue[Entry]{}
-	seen := map[Entry]int{}
-	directions := []utils.Direction{utils.Up, utils.Down, utils.Left, utils.Right}
-
-	q.Push(Entry{
-		block: utils.NewPosition(0, 0),
-		steps: 26501365,
-	})
-
-	cache := map[int]int{}
-
-	for !q.IsEmpty() {
-		entry := q.Pop()
-		fmt.Println(q.Len())
-
-		if entry.steps > next_block {
-			if entry.block.ManhattanZero()%2 == 0 {
-				total += max_even
-			} else {
-				total += max_odd
-			}
-
-			for _, direction := range directions {
-				new_pos := entry.block.Move(direction, 1)
-				if new_pos.ManhattanZero()%2 == 0 {
-					total += max_even
-					seen[entry] = max_even
-				} else {
-					total += max_odd
-					seen[entry] = max_odd
+	for r, row := range input {
+		for c, column := range row {
+			for x := 1; x <= 5; x++ {
+				for y := 1; y <= 5; y++ {
+					pos := utils.NewPosition(r*x, c*y)
+					loc := Location{land: string(column), visited: false}
+					grid[pos] = loc
 				}
-				q.Push(Entry{
-					block: new_pos,
-					steps: entry.steps - next_block,
-				})
 			}
-		} else {
-			var result int
-			if cache_entry, exists := cache[entry.steps]; exists {
-				result = cache_entry
-			} else {
-				set_grid(grid, input)
-				result := part1(grid, start_pos, rows, cols, entry.steps)
-				seen[entry] = result
-				cache[entry.steps] = result
-			}
-			total += result
-
+			cols = max(cols, r)
 		}
+		rows = max(rows, r)
 	}
-	fmt.Println(total)
+	new_rows := rows * 5
+	steps55 := grid_length*2 + mod
+	start_pos = utils.NewPosition(grid_length*2+mod, grid_length*2+mod)
+	total55 := part1(grid, start_pos, new_rows, new_rows, grid_length*2+mod)
 
+	// find values in a 7.7 grid
+
+	for r, row := range input {
+		for c, column := range row {
+			for x := 1; x <= 7; x++ {
+				for y := 1; y <= 7; y++ {
+					pos := utils.NewPosition(r*x, c*y)
+					loc := Location{land: string(column), visited: false}
+					grid[pos] = loc
+				}
+			}
+			cols = max(cols, r)
+		}
+		rows = max(rows, r)
+	}
+	new_rows = rows * 7
+	steps77 := grid_length*3 + mod
+	start_pos = utils.NewPosition(grid_length*3+mod, grid_length*3+mod)
+	total77 := part1(grid, start_pos, new_rows, new_rows, grid_length*3+mod)
+
+	// find values in a 9.9 grid
+
+	for r, row := range input {
+		for c, column := range row {
+			for x := 1; x <= 9; x++ {
+				for y := 1; y <= 9; y++ {
+					pos := utils.NewPosition(r*x, c*y)
+					loc := Location{land: string(column), visited: false}
+					grid[pos] = loc
+				}
+			}
+			cols = max(cols, r)
+		}
+		rows = max(rows, r)
+	}
+	new_rows = rows * 9
+	steps99 := grid_length*4 + mod
+	start_pos = utils.NewPosition(grid_length*4+mod, grid_length*4+mod)
+	total99 := part1(grid, start_pos, new_rows, new_rows, grid_length*4+mod)
+
+	// f(n) = total55
+	// f(n+2) = total77
+	// f(n+4) = totall99
+
+	// x is the number of steps, y is the result
+	// gives data points
+	// steps55, total55...
+
+	// Gives follow for L(needed_steps)
+	L0 := ((needed_steps - steps77) * (needed_steps - steps99)) / ((steps55 - steps77) * (steps55 - steps99))
+	L1 := ((needed_steps - steps55) * (needed_steps - steps99)) / ((steps77 - steps55) * (steps77 - steps99))
+	L2 := ((needed_steps - steps55) * (needed_steps - steps77)) / ((steps99 - steps55) * (steps99 - steps77))
+	fmt.Println(L0)
+	fmt.Println(total55)
+	fmt.Println(L1)
+	fmt.Println(total77)
+	fmt.Println(L2)
+	fmt.Println(total99)
+	result := L0*total55 + L1*total77 + L2*total99
+
+	fmt.Println(result)
 }
