@@ -132,6 +132,29 @@ func find_visited(grid map[utils.Position]Location, visited map[utils.Position]i
 			}
 		}
 	}
+
+	for row := 0; row <= rows; row++ {
+		for col := 0; col <= cols; col++ {
+			pos := utils.NewPosition(row, col)
+			loc := grid[pos]
+
+			if steps, exists := visited[pos]; exists {
+				if pos.Manhattan(start_pos) > 65 {
+					if steps%2 == 0 {
+						fmt.Print("E")
+					} else {
+						fmt.Print("O")
+					}
+
+				} else {
+					fmt.Print(loc.land)
+				}
+			} else {
+				fmt.Print(loc.land)
+			}
+		}
+		fmt.Println()
+	}
 	return visited
 }
 
@@ -159,6 +182,11 @@ func main() {
 
 	// Step 2
 
+	// If anyone is reading the git history here, I calculate the answer on paper
+	// using Lagrange interpolation and iteration, and got it working with a jupyter
+	// notebook. Sadly my golang has not been able to keep up with my maths, and so the answer
+	// below is off by about 200k and I don't know why
+
 	needed_steps := 26501365
 	grid_length := 131
 
@@ -177,15 +205,15 @@ func main() {
 	var odd_corners_val int
 	var even_full_val int
 	var odd_full_val int
-	for _, steps := range visited {
+	for pos, steps := range visited {
 		if steps%2 == 0 {
 			even_full_val++
-			if steps > 65 {
+			if pos.Manhattan(start_pos) > 64 {
 				even_corners_val++
 			}
 		} else {
 			odd_full_val++
-			if steps > 65 {
+			if pos.Manhattan(start_pos) > 64 {
 				odd_corners_val++
 			}
 		}
