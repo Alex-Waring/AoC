@@ -82,6 +82,15 @@ func NewPosition(row int, col int) Position {
 	return Position{Row: row, Col: col}
 }
 
+func PosInSlice(a Position, list []Position) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
+}
+
 func (p Position) Move(direction Direction, moves int) Position {
 	switch direction {
 	case Up:
