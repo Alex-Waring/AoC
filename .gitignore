@@ -1,2 +1,4 @@
 **/input.txt
 **/output.txt
+.aoc_tiles/*
+!.aoc_tiles/tiles/
