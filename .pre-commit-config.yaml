@@ -2,7 +2,7 @@ repos:
     - repo: https://github.com/LiquidFun/aoc_tiles
       rev: 0.5.4
       hooks:
-          - id: aoc-tiles --auto-add-tiles-to-git=amend
+          - id: aoc-tiles
             args: ["--auto-add-tiles-to-git=amend"]
             # Optionally use these arguments. Auto add tiles to git adds the tiles to git,
             # possibly amends your commit by creating the tile images and updating the README.
