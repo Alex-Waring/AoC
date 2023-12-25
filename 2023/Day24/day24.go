@@ -71,7 +71,6 @@ func part1(hail []Hailstone, lower_bound int, upper_bound int) {
 		}
 	}
 	fmt.Println(total)
-
 }
 
 func main() {
