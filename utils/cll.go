@@ -2,6 +2,10 @@ package utils
 
 import "fmt"
 
+// Containts functions to handle Linked Lists and Circular Linked Lists
+// By default lists are just linked, to make them circular the list needs
+// to be passed to ConvertSinglyToCircular
+
 type Node struct {
 	info interface{}
 	next *Node
@@ -10,6 +14,8 @@ type Node struct {
 type LinkedList struct {
 	head *Node
 }
+
+func (n *Node) GetInfo() interface{} { return n.info }
 
 func (l *LinkedList) Insert(d interface{}) {
 	node := &Node{info: d, next: nil}
@@ -118,6 +124,14 @@ func GetPos(l *LinkedList, pos int) interface{} {
 		p = p.next
 	}
 	return p.info
+}
+
+func GetFirst(l *LinkedList) *Node {
+	return l.head
+}
+
+func GetNext(n *Node) *Node {
+	return n.next
 }
 
 func GetPosFrom(l *LinkedList, from interface{}, pos int) interface{} {
