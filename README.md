@@ -83,7 +83,7 @@ all solutions and a semi sensible library to help me.
   <img src=".aoc_tiles/tiles/2023/25.png" width="161px">
 </a>
 <h1 align="center">
-  2022 - 40 ⭐
+  2022 - 44 ⭐
 </h1>
 <a href="2022/Day01/day1.go">
   <img src=".aoc_tiles/tiles/2022/01.png" width="161px">
@@ -144,5 +144,11 @@ all solutions and a semi sensible library to help me.
 </a>
 <a href="2022/Day20/main.go">
   <img src=".aoc_tiles/tiles/2022/20.png" width="161px">
+</a>
+<a href="2022/Day21/main.go">
+  <img src=".aoc_tiles/tiles/2022/21.png" width="161px">
+</a>
+<a href="2022/Day22/main.go">
+  <img src=".aoc_tiles/tiles/2022/22.png" width="161px">
 </a>
 <!-- AOC TILES END -->
