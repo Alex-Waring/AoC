@@ -50,6 +50,21 @@ func (d Direction) Turn(turn Direction) Direction {
 	panic("not handled")
 }
 
+func (d Direction) Flip() Direction {
+	switch d {
+	case Up:
+		return Down
+	case Down:
+		return Up
+	case Left:
+		return Right
+	case Right:
+		return Left
+	}
+
+	panic("not handled")
+}
+
 func (d Direction) String() string {
 	switch d {
 	case Up:
@@ -158,4 +173,39 @@ func (p Position) Manhattan(p2 Position) int {
 // ManhattanZero returns the manhattan distance from the zero position.
 func (p Position) ManhattanZero() int {
 	return p.Manhattan(Position{})
+}
+
+// A Board is a map of a position to a string.
+type Board map[Position]string
+
+func NewBoard() Board {
+	return Board{}
+}
+
+// Wrap returns the position when stepping outside of the board.
+// Pass in the position before wrapping, and the direction, it takes 1 step
+func (b Board) Wrap(d Direction, p Position) Position {
+	// If the position doesn't exist, return the position
+	if _, exists := b[p]; !exists {
+		return p
+	}
+
+	// Move the other way as far as possible
+	for {
+		new_pos := p.Move(d.Flip(), 1)
+		if _, exists := b[new_pos]; !exists {
+			return p
+		}
+		p = new_pos
+	}
+}
+
+func (b Board) Bottom() int {
+	max := 0
+	for p := range b {
+		if p.Row > max {
+			max = p.Row
+		}
+	}
+	return max
 }
