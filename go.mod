@@ -1,6 +1,6 @@
 module github.com/Alex-Waring/AoC
 
-go 1.21.4
+go 1.22.0
 
 require (
 	github.com/OpenWhiteBox/primitives v0.0.0-20161020045608-2f25eea09f86 // indirect
