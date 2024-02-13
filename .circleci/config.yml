@@ -5,7 +5,7 @@ jobs:
   test-go:
     # Install go modules and run tests
     docker:
-      - image: cimg/go:1.21
+      - image: cimg/go:1.22
     steps:
       - checkout
       - restore_cache:
@@ -29,7 +29,7 @@ jobs:
   build-go-executables:
     # Build go executables and store them as artifacts
     docker:
-      - image: cimg/go:1.21
+      - image: cimg/go:1.22
     steps:
       - checkout
       - restore_cache:
@@ -54,15 +54,6 @@ jobs:
       - store_artifacts:
           path: ~/artifacts
           destination: executables
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
-    docker:
-      - image: cimg/base:stable
-    steps:
-      # Replace this with steps to deploy to users
-      - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
 workflows:
   build-and-test:
     jobs:
@@ -70,6 +61,3 @@ workflows:
       - build-go-executables:
           requires:
             - test-go
-    # - deploy:
-    #     requires:
-    #       - build-go-executables
