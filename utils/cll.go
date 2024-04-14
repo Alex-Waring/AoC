@@ -1,6 +1,9 @@
 package utils
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 // Containts functions to handle Linked Lists and Circular Linked Lists
 // By default lists are just linked, to make them circular the list needs
@@ -13,6 +16,16 @@ type Node struct {
 
 type LinkedList struct {
 	head *Node
+}
+
+func NewLinkedList(input interface{}) LinkedList {
+	list := LinkedList{}
+
+	list_input := reflect.ValueOf(input)
+	for i := 0; i < list_input.Len(); i++ {
+		list.Insert(list_input.Index(i))
+	}
+	return list
 }
 
 func (n *Node) GetInfo() interface{} { return n.info }
