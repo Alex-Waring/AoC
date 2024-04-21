@@ -14,6 +14,8 @@ const (
 	UpRight
 	DownLeft
 	DownRight
+
+	DontMove
 )
 
 func (d Direction) Turn(turn Direction) Direction {
@@ -83,6 +85,8 @@ func (d Direction) String() string {
 		return "down left"
 	case DownRight:
 		return "down right"
+	case DontMove:
+		return "don't move"
 	default:
 		panic(fmt.Sprintf("unknown direction %d", d))
 	}
@@ -124,6 +128,8 @@ func (p Position) Move(direction Direction, moves int) Position {
 		return p.Slide(moves, -moves)
 	case DownRight:
 		return p.Slide(moves, moves)
+	case DontMove:
+		return p.Slide(0, 0)
 	}
 
 	panic("not handled")
