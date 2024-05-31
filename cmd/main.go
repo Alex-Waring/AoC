@@ -91,16 +91,18 @@ func PrepareFile(year int, day int) {
 
 import "github.com/Alex-Waring/AoC/utils"
 	
-func part1() {
+func part1(input []string) {
 	defer utils.Timer("part1")()
 }
 	
-func part2() {
+func part2(input []string) {
 	defer utils.Timer("part2")()
 }
 
 func main() {
 	input := utils.ReadInput("input.txt")
+	part1(input)
+	part2(input)
 }`
 
 	err := os.MkdirAll(filepath.Dir(filename), os.ModePerm)
