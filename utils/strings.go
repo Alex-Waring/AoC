@@ -1,6 +1,9 @@
 package utils
 
-import "strings"
+import (
+	"sort"
+	"strings"
+)
 
 func RemoveSliceSpaces(list []string) []string {
 	return_list := []string{}
@@ -67,4 +70,12 @@ func Reverse(s string) string {
 		runes[i], runes[j] = runes[j], runes[i]
 	}
 	return string(runes)
+}
+
+func SortStringAlphabetically(s string) string {
+	runeSlice := []rune(s)
+	sort.Slice(runeSlice, func(i, j int) bool {
+		return runeSlice[i] < runeSlice[j]
+	})
+	return string(runeSlice)
 }

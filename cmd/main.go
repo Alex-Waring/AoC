@@ -110,4 +110,7 @@ func main() {
 	file, err := os.Create(filename)
 	file.WriteString(base_file)
 	utils.Check(err)
+
+	_, err = os.Create(filepath.Join(fmt.Sprintf("%d/Day%02d/example.txt", year, day)))
+	utils.Check(err)
 }

@@ -18,9 +18,18 @@ func IntegerOf(str string) int {
 	return num
 }
 
-// Makes a slice from min to max, will panic of min is larger than
-// max
-func MakeRange(min int, max int) []int {
+// Makes a slice from a to b
+func MakeRange(start int, end int) []int {
+	var max int
+	var min int
+	if start > end {
+		max = start
+		min = end
+	} else {
+		max = end
+		min = start
+	}
+
 	a := make([]int, max-min+1)
 	for i := range a {
 		a[i] = min + i
