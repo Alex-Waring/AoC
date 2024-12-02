@@ -5,13 +5,16 @@ all solutions and a semi sensible library to help me.
 
 <!-- AOC TILES BEGIN -->
 <h1 align="center">
-  Advent of Code - 118/452 ⭐
+  Advent of Code - 120/454 ⭐
 </h1>
 <h1 align="center">
-  2024 - 2 ⭐ - Go
+  2024 - 4 ⭐ - Go
 </h1>
 <a href="2024/Day01/main.go">
   <img src=".aoc_tiles/tiles/2024/01.png" width="161px">
+</a>
+<a href="2024/Day02/main.go">
+  <img src=".aoc_tiles/tiles/2024/02.png" width="161px">
 </a>
 <h1 align="center">
   2023 - 50 ⭐ - Go
