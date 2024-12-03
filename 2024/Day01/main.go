@@ -8,9 +8,7 @@ import (
 	"github.com/Alex-Waring/AoC/utils"
 )
 
-func part1(input []string) {
-	defer utils.Timer("part1")()
-
+func part1(input []string) string {
 	list_1 := []int{}
 	list_2 := []int{}
 
@@ -30,12 +28,10 @@ func part1(input []string) {
 	for i := 0; i < len(list_1); i++ {
 		total += utils.Abs(list_2[i] - list_1[i])
 	}
-	fmt.Println(total)
+	return fmt.Sprint(total)
 }
 
-func part2(input []string) {
-	defer utils.Timer("part2")()
-
+func part2(input []string) string {
 	list_1 := []int{}
 	list_2 := []int{}
 
@@ -60,11 +56,11 @@ func part2(input []string) {
 		}
 		total += sub_total * list_1[i]
 	}
-	fmt.Println(total)
+	return fmt.Sprint(total)
 }
 
 func main() {
 	input := utils.ReadInput("input.txt")
-	part1(input)
-	part2(input)
+	fmt.Println(part1(input))
+	fmt.Println(part2(input))
 }
