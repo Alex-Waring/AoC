@@ -11,3 +11,12 @@ func StringToIntList(slice []string) []int {
 	}
 	return res
 }
+
+func IntListContains(slice []int, value int) bool {
+	for _, i := range slice {
+		if i == value {
+			return true
+		}
+	}
+	return false
+}
