@@ -76,7 +76,7 @@ func part2(input []string) {
 	// Add a new obstruction to the board
 	found_loops := 0
 	tried := 0
-	for obstruction, _ := range places_to_check {
+	for obstruction := range places_to_check {
 		tried++
 		if tried%1000 == 0 {
 			fmt.Println(tried)
@@ -84,14 +84,8 @@ func part2(input []string) {
 		if board[obstruction] == "#" || board[obstruction] == "^" {
 			continue
 		}
-		new_board := utils.NewBoard()
-		for k, v := range board {
-			if k == obstruction {
-				new_board[k] = "#"
-			} else {
-				new_board[k] = v
-			}
-		}
+		old_char := board[obstruction]
+		board[obstruction] = "#"
 
 		location := utils.Location{
 			Pos: utils.Position{
@@ -109,17 +103,17 @@ func part2(input []string) {
 			// Move the location in the direction it's facing
 			new_pos := location.Pos.Move(location.Dir, 1)
 			// If the new position is off the board, stop
-			if _, ok := new_board[new_pos]; !ok {
+			if _, ok := board[new_pos]; !ok {
 				break
 			}
 			// If the new position is a wall, turn right, loop until open
 			for true {
-				if new_board[new_pos] == "#" {
+				if board[new_pos] == "#" {
 					location.Dir = location.Dir.Turn(utils.Right)
 					new_pos = location.Pos.Move(location.Dir, 1)
 				}
 				// If the new position is open space, move there
-				if new_board[new_pos] == "." {
+				if board[new_pos] == "." {
 					location.Pos = new_pos
 					break
 				}
@@ -134,6 +128,7 @@ func part2(input []string) {
 			}
 			places_been[location.Pos] = true
 		}
+		board[obstruction] = old_char
 	}
 	fmt.Println(found_loops)
 }
