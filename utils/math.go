@@ -1,6 +1,9 @@
 package utils
 
-import "strconv"
+import (
+	"strconv"
+	"strings"
+)
 
 func Sum(arr []int) int {
 	res := 0
@@ -109,4 +112,25 @@ func FindMin(arr []int) int {
 	}
 
 	return min
+}
+
+// Returns true if a ends with b
+func EndsWith(a, b int) bool {
+	aStr := strconv.Itoa(a)
+	bStr := strconv.Itoa(b)
+	return strings.HasSuffix(aStr, bStr)
+}
+
+// trims the int b off of a
+func RemoveSuffix(a, b int) int {
+	aStr := strconv.Itoa(a)
+	bStr := strconv.Itoa(b)
+	return IntegerOf(strings.TrimSuffix(aStr, bStr))
+}
+
+func IsDivisible(a, b int) bool {
+	if b == 0 {
+		return false // Avoid division by zero
+	}
+	return a%b == 0
 }
