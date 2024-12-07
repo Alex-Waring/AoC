@@ -49,18 +49,28 @@ func recursive_check(inputs []int, target int, check_concat bool) bool {
 	return false
 }
 
+func solve(inputs []int, test_result int, concat bool, results chan<- int) {
+	if recursive_check(inputs, test_result, concat) {
+		results <- test_result
+	} else {
+		results <- 0
+	}
+}
+
 func part2(input []string) {
 	defer utils.Timer("part2")()
 
 	total := 0
+	results := make(chan int, len(input))
 
 	for _, line := range input {
 		test_result := utils.IntegerOf(strings.Split(line, ":")[0])
 		inputs := utils.StringToIntList(strings.Fields(strings.Split(line, ":")[1]))
 
-		if recursive_check(inputs, test_result, true) {
-			total += test_result
-		}
+		go solve(inputs, test_result, true, results)
+	}
+	for i := 0; i < len(input); i++ {
+		total += <-results
 	}
 	fmt.Println(total)
 }
