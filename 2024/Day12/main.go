@@ -82,14 +82,24 @@ func part2(input []string) {
 			for _, dir := range dirs {
 				new_loc := loc.Move(dir, 1)
 				if board[new_loc] != board[loc] {
-					// Check 1 finds 90 degrees anti-clockwise from dir
-					check1 := loc.Move(rotate(dir), 1)
-					// Check 2 also moves in that dir
-					check2 := check1.Move(dir, 1)
+					// Find two possible corners:
+					// 1. 90 degrees anti-clockwise from dir and dir are not the same as the current loc
+					// This is a corner around P
+
 					// .....
-					// ..2D.
+					// ...D.
 					// ..1P.
 					// .....
+					check1 := loc.Move(rotate(dir), 1)
+
+					// 2. 45 degrees anti-clockwise from dir is the same but dir is not
+					// this is a corner around D
+					// .....
+					// ..2D.
+					// ...P.
+					// .....
+
+					check2 := check1.Move(dir, 1)
 
 					// If check1 is not the same as the current loc, or check2 is the same as the current loc
 					// then we are at a corner, and can add a side
