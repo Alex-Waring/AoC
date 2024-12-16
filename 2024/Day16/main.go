@@ -85,6 +85,7 @@ func part1(input []string) int {
 type StoredPath struct {
 	loc  utils.Location
 	path map[utils.Position]bool
+	cost int
 }
 
 func part2(input []string, min int) {
@@ -92,12 +93,16 @@ func part2(input []string, min int) {
 
 	board := utils.NewBoard()
 	start := utils.NewLocation(0, 0, utils.Right)
+	end := utils.NewPosition(0, 0)
 
 	for row, line := range input {
 		for col, char := range line {
 			board[utils.NewPosition(row, col)] = string(char)
 			if char == 'S' {
 				start = utils.NewLocation(row, col, utils.Right)
+			}
+			if char == 'E' {
+				end = utils.NewPosition(row, col)
 			}
 		}
 	}
@@ -106,7 +111,8 @@ func part2(input []string, min int) {
 	pq[0] = utils.NewItem(StoredPath{
 		loc:  start,
 		path: map[utils.Position]bool{start.Pos: true},
-	}, 0, 0)
+		cost: 0,
+	}, end.Manhattan(start.Pos), 0)
 	heap.Init(&pq)
 
 	cost_so_far := map[utils.Location]int{}
@@ -118,7 +124,7 @@ func part2(input []string, min int) {
 		item := heap.Pop(&pq).(*utils.Item)
 		item_value := item.GetValue().(StoredPath)
 		loc := item_value.loc
-		cost := item.GetPriority()
+		cost := item_value.cost
 
 		// Check if finished
 		if board[item_value.loc.Pos] == "E" {
@@ -142,7 +148,8 @@ func part2(input []string, min int) {
 				new_item := utils.NewItem(StoredPath{
 					loc:  newLoc,
 					path: new_path,
-				}, new_cost, 0)
+					cost: new_cost,
+				}, new_cost+end.Manhattan(newLoc.Pos), 0)
 				heap.Push(&pq, new_item)
 				pq.Update(new_item, new_cost)
 			}
@@ -158,7 +165,8 @@ func part2(input []string, min int) {
 			new_item := utils.NewItem(StoredPath{
 				loc:  newLoc,
 				path: new_path,
-			}, new_cost, 0)
+				cost: new_cost,
+			}, new_cost+end.Manhattan(newLoc.Pos), 0)
 			heap.Push(&pq, new_item)
 			pq.Update(new_item, new_cost)
 		}
@@ -173,7 +181,8 @@ func part2(input []string, min int) {
 			new_item := utils.NewItem(StoredPath{
 				loc:  newLoc,
 				path: new_path,
-			}, new_cost, 0)
+				cost: new_cost,
+			}, new_cost+end.Manhattan(newLoc.Pos), 0)
 			heap.Push(&pq, new_item)
 			pq.Update(new_item, new_cost)
 		}
