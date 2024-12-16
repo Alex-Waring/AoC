@@ -1,51 +1,69 @@
 package utils
 
-// Implementing a queue sorted in the order
-// definied by a comparison function
+import "container/heap"
 
-type PriorityQueue[T comparable] struct {
-	items      []T
-	comparator func(a, b T) int
+// A queue, used for finding the shortest path
+// so we pull the lowest cost item off first
+
+type Item struct {
+	value    any // Whatever we are storing in the queue
+	priority int // The priority of the item in the queue
+	index    int // The index of the item in the heap
 }
 
-// NewPriorityQueue creates a new prio queue with the given comparitor
-func NewPriorityQueue[T comparable](comparator func(a, b T) int) PriorityQueue[T] {
-	return PriorityQueue[T]{comparator: comparator}
+func (item Item) GetValue() any {
+	return item.value
 }
 
-// Reference https://maneeshaindrachapa.medium.com/heap-data-structure-in-golang-98641a32d2e3
-
-// maxHeapifyDown process
-// func (pq *PriorityQueue[T]) maxHeapifyDown(index int) {
-// 	lastIndex := len(pq.items) - 1
-// 	l, r := left(index), right(index)
-// 	childToCompare := 0
-// 	// loop while index has at least one child
-// 	for l <= lastIndex { // when left child is the only child
-// 		if l == lastIndex {
-// 			childToCompare = l
-// 		} else if pq.items[l] > pq.items[r] { // when left child is larger
-// 			childToCompare = l
-// 		} else { // when right child is larger
-// 			childToCompare = r
-// 		}
-// 		// Compare array value of the current index to larger child and swap if smaller
-// 		if pq.items[index] < pq.items[childToCompare] {
-// 			pq.swap((index), childToCompare)
-// 			index = childToCompare
-// 			l, r = left(index), right(index)
-// 		} else {
-// 			return
-// 		}
-// 	}
-// }
-
-// Get the left child index
-func left(i int) int {
-	return 2*i + 1
+func (item Item) GetPriority() int {
+	return item.priority
 }
 
-// Get the right child index
-func right(i int) int {
-	return 2*i + 2
+type PriorityQueue []*Item
+
+func (pq PriorityQueue) Len() int { return len(pq) }
+
+// Less converts priority to order, so if the priority is lower,
+// we want to be at the start
+func (pq PriorityQueue) Less(i, j int) bool {
+	return pq[i].priority < pq[j].priority
+}
+
+func (pq PriorityQueue) Swap(i, j int) {
+	pq[i], pq[j] = pq[j], pq[i]
+	// We've swapped the items, so we need to update the index
+	pq[i].index = i
+	pq[j].index = j
+}
+
+func (pq *PriorityQueue) Push(item any) {
+	cast_item := item.(*Item)
+	cast_item.index = len(*pq)
+	*pq = append(*pq, cast_item)
+}
+
+// Grab the item from the end of the list
+func (pq *PriorityQueue) Pop() any {
+	old_queue := *pq
+	len := len(old_queue)
+	item := old_queue[len-1]
+
+	// nil the last item, so it can be garbage collected
+	old_queue[len-1] = nil
+
+	*pq = old_queue[0 : len-1]
+	return item
+}
+
+func (pq *PriorityQueue) Update(item *Item, priority int) {
+	item.priority = priority
+	heap.Fix(pq, item.index)
+}
+
+func NewItem(value any, priority int, index int) *Item {
+	return &Item{
+		value:    value,
+		priority: priority,
+		index:    index,
+	}
 }
