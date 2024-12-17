@@ -114,10 +114,12 @@ func main() {
 
 	a_to_start := 0
 
+MAIN_LOOP:
 	for {
 		var result string
+		i := 0
 	BRUTE_LOOP:
-		for i := range 8 {
+		for {
 			a := a_to_start + i
 			result = part1(a, B, C, program)
 			if strings.HasSuffix(target, result) {
@@ -125,19 +127,11 @@ func main() {
 				fmt.Printf("%d: %s\n", a, result)
 				break BRUTE_LOOP
 			}
+			i++
 		}
-		// At this point we're nearly there and need to brute force the last few values
-		if result == strings.TrimPrefix(target, "2,") {
-			break
-		}
-	}
-
-	for {
-		a_to_start++
-		result := part1(a_to_start, B, C, program)
 		if result == target {
 			fmt.Printf("%d: %s\n", a_to_start, result)
-			break
+			break MAIN_LOOP
 		}
 	}
 }
