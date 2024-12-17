@@ -1,0 +1,14 @@
+Combo operands:
+
+0,0 1,1 2,2 3,3 4,A 5,B 6,C
+
+0: floor(A/2^combo) -> A
+1: bitwise XOR(B, literal) -> B
+2: combo % 8 -> B
+3: if A is zero does nothing, otherwise instruction = literal (don't add 2)
+4: bitwise XOR(B, C) -> B
+5: combo % 8 -> output
+6: floor(A/2^combo) -> B
+7: floor(A/2^combo) -> C
+
+Grab last 8 bits, so loops of 8
