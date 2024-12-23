@@ -20,3 +20,12 @@ func IntListContains(slice []int, value int) bool {
 	}
 	return false
 }
+
+func StringListContains(slice []string, value string) bool {
+	for _, s := range slice {
+		if s == value {
+			return true
+		}
+	}
+	return false
+}
