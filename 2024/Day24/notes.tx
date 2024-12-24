@@ -1,0 +1,20 @@
+All XOR gates that input x__ and y__ cannot ever output z__ (unless x00,y00 because the first one is a half adder)
+
+All other XOR gates must output z__
+
+All gates that output z__ must be XOR (except for z45, which is the final carry)
+
+All gates checked in (1) must output to gate checked in (2)
+If there are any swaps unaccounted for, manually review
+
+x19 AND y19 -> z19 // Wrong, rule 3, can't be z
+hhp XOR tjm -> dsd // Wrong, rule 2, must be z
+
+jsb AND njf -> z12 // Wrong, rule 3, can't be z
+njf XOR jsb -> djg // Wrong, rule 2, must be z
+
+spj OR gqf -> z37 // Wrong, rule 3, can't be z
+qjc XOR kbs -> sbg // Wrong, rule 2, must be z
+
+
+Find pairs by matching these up and guessing
