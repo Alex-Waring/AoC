@@ -5,7 +5,7 @@ all solutions and a semi sensible library to help me.
 
 <!-- AOC TILES BEGIN -->
 <h1 align="center">
-  Advent of Code - 166/500 ⭐
+  Advent of Code - 168/500 ⭐
 </h1>
 <h1 align="center">
   2024 - 50 ⭐ - Go
@@ -267,5 +267,11 @@ all solutions and a semi sensible library to help me.
 </a>
 <a href="2021/Day08/main.go">
   <img src=".aoc_tiles/tiles/2021/08.png" width="161px">
+</a>
+<h1 align="center">
+  2015 - 2 ⭐ - Rust
+</h1>
+<a href="2015/day01.rs">
+  <img src=".aoc_tiles/tiles/2015/01.png" width="161px">
 </a>
 <!-- AOC TILES END -->
