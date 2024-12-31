@@ -1,7 +1,7 @@
 # Advent of Code
 
-Solutions in python and golang, as I learn these languages. 2022 was my first year, but in 2023 I managed
-all solutions and a semi sensible library to help me.
+Solutions in python and golang and rust, as I learn these languages. 2022 was my first year, but in 2023 I managed
+all solutions and a semi sensible library to help me. 2024 I managed to achieve some relatively fast times.
 
 <!-- AOC TILES BEGIN -->
 <h1 align="center">
