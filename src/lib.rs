@@ -7,6 +7,6 @@ macro_rules! library {
     }
 }
 
-library!(year2015 "2015"
-    day01
+library!(year2015 "../2015"
+    day01, day02, day03, day04
 );

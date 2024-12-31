@@ -35,9 +35,20 @@ var baseFile = &cobra.Command{
 	},
 }
 
+var rustBaseFile = &cobra.Command{
+	Use:     "rustfile",
+	Aliases: []string{"rf"},
+	Short:   "Prepare a rust base file",
+	Args:    cobra.ExactArgs(2),
+	Run: func(cmd *cobra.Command, args []string) {
+		PrepareRustFile(utils.IntegerOf(args[0]), utils.IntegerOf(args[1]))
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(newInput)
 	rootCmd.AddCommand(baseFile)
+	rootCmd.AddCommand(rustBaseFile)
 }
 
 // Requires the session cookie to be in the repo
@@ -109,6 +120,43 @@ func main() {
 	utils.Check(err)
 	file, err := os.Create(filename)
 	file.WriteString(base_file)
+	utils.Check(err)
+
+	_, err = os.Create(filepath.Join(fmt.Sprintf("%d/Day%02d/example.txt", year, day)))
+	utils.Check(err)
+}
+
+func PrepareRustFile(year int, day int) {
+	filename := filepath.Join(fmt.Sprintf("%d/day%02d.rs", year, day))
+
+	if _, err := os.Stat(filename); err == nil {
+		return
+	}
+
+	base_file := `use std::fs;
+
+pub fn main() {
+    println!("Part1: {}", part1());
+    println!("Part2: {}", part2());
+}
+
+pub fn part1() -> String {
+    let input = fs::read_to_string("./%d/day%02d/input.txt").expect("Error reading input.txt");
+
+    return format!("");
+}
+
+pub fn part2() -> String {
+    let input = fs::read_to_string("./%d/day%02d/input.txt").expect("Error reading input.txt");
+
+    return format!("");
+}
+`
+
+	err := os.MkdirAll(filepath.Dir(filename), os.ModePerm)
+	utils.Check(err)
+	file, err := os.Create(filename)
+	file.WriteString(fmt.Sprintf(base_file, year, day, year, day))
 	utils.Check(err)
 
 	_, err = os.Create(filepath.Join(fmt.Sprintf("%d/Day%02d/example.txt", year, day)))

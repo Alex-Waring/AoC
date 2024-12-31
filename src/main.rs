@@ -47,7 +47,7 @@ struct Solution {
 }
 
 macro_rules! run {
-    ($year:tt $path:tt $($day:tt),*)  => {
+    ($year:tt $($day:tt),*)  => {
         fn $year() -> Vec<Solution> {
             vec![$({
                 let year = stringify!($year);
@@ -72,8 +72,8 @@ macro_rules! run {
     };
 }
 
-run!(year2015 "2015"
-    day01
+run!(year2015
+    day01, day02, day03, day04
 );
 
 pub const RESET: &str = "\x1b[0m";

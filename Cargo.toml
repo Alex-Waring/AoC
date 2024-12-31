@@ -4,11 +4,12 @@ edition = "2021"
 
 
 [lib]
-path = "lib.rs"
+path = "src/lib.rs"
 
 [[bin]]
 name = "aoc"
-path = "main.rs"
+path = "src/main.rs"
 
 [dependencies]
 clap = { version = "4.0", features = ["derive"] }
+num = "0.4"
