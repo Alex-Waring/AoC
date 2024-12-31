@@ -13,3 +13,4 @@ path = "src/main.rs"
 [dependencies]
 clap = { version = "4.0", features = ["derive"] }
 num = "0.4"
+md5 = "0.7.0"
