@@ -5,10 +5,10 @@ all solutions and a semi sensible library to help me. 2024 I managed to achieve 
 
 <!-- AOC TILES BEGIN -->
 <h1 align="center">
-  Advent of Code - 188/514 ⭐
+  Advent of Code - 192/514 ⭐
 </h1>
 <h1 align="center">
-  2025 - 10 ⭐ - Go
+  2025 - 14 ⭐ - Go
 </h1>
 <a href="2025/Day01/main.go">
   <img src=".aoc_tiles/tiles/2025/01.png" width="161px">
@@ -24,6 +24,12 @@ all solutions and a semi sensible library to help me. 2024 I managed to achieve 
 </a>
 <a href="2025/Day05/main.go">
   <img src=".aoc_tiles/tiles/2025/05.png" width="161px">
+</a>
+<a href="2025/Day06/main.go">
+  <img src=".aoc_tiles/tiles/2025/06.png" width="161px">
+</a>
+<a href="2025/Day07/main.go">
+  <img src=".aoc_tiles/tiles/2025/07.png" width="161px">
 </a>
 <h1 align="center">
   2024 - 50 ⭐ - Go

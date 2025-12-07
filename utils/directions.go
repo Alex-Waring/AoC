@@ -215,3 +215,13 @@ func (b Board) Bottom() int {
 	}
 	return max
 }
+
+func (b Board) Right() int {
+	max := 0
+	for p := range b {
+		if p.Col > max {
+			max = p.Col
+		}
+	}
+	return max
+}
