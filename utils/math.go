@@ -86,6 +86,20 @@ func Abs(a int) int {
 	return -a
 }
 
+func Min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func Max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
 func FindMax(arr []int) int {
 	// Initialize the variables to hold the maximum and minimum values to draw comparisons.
 	max := arr[0]

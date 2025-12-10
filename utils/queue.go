@@ -1,7 +1,7 @@
 package utils
 
 // Implementing a queue based off of an array list
-// This queue is FIFO
+// This queue is LIFO
 
 type Queue[T any] struct {
 	items []T
@@ -18,6 +18,13 @@ func (q *Queue[T]) Pop() T {
 	top := q.items[lastIndex]
 	q.items = q.items[:lastIndex]
 	return top
+}
+
+// PopFront removes and returns the first item (FIFO - Queue behavior)
+func (q *Queue[T]) PopFront() T {
+	first := q.items[0]
+	q.items = q.items[1:]
+	return first
 }
 
 // Peek the top item of a queue

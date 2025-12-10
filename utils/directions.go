@@ -188,6 +188,38 @@ func NewBoard() Board {
 	return Board{}
 }
 
+func (b Board) Print() {
+	minRow, maxRow := 0, 0
+	minCol, maxCol := 0, 0
+	for p := range b {
+		if p.Row < minRow {
+			minRow = p.Row
+		}
+		if p.Row > maxRow {
+			maxRow = p.Row
+		}
+		if p.Col < minCol {
+			minCol = p.Col
+		}
+		if p.Col > maxCol {
+			maxCol = p.Col
+		}
+	}
+
+	for r := minRow; r <= maxRow; r++ {
+		for c := minCol; c <= maxCol; c++ {
+			pos := Position{Row: r, Col: c}
+			val, exists := b[pos]
+			if exists {
+				fmt.Print(val)
+			} else {
+				fmt.Print(".")
+			}
+		}
+		fmt.Println()
+	}
+}
+
 // Wrap returns the position when stepping outside of the board.
 // Pass in the position before wrapping, and the direction, it takes 1 step
 func (b Board) Wrap(d Direction, p Position) Position {
